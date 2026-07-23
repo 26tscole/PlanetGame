@@ -147,7 +147,7 @@ Transform:
   m_GameObject: {fileID: 174967624}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 500, y: 0, z: 0}
+  m_LocalPosition: {x: 500, y: 0, z: 500}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -216,8 +216,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5041c86e22b11e408255555ca11fd41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Movemeent
-  baseSpeed: 5
-  startingOffset: 10
 --- !u!1001 &372119518
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -518,7 +516,7 @@ Transform:
   m_GameObject: {fileID: 778511134}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 500, y: 10, z: -25}
+  m_LocalPosition: {x: 500, y: 10, z: 480}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
