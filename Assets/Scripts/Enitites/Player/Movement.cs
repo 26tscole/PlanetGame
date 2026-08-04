@@ -2,44 +2,41 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    private Rigidbody rb;
-    private Collider col;
-    [SerializeField] private float upwardThusterForce = 10f;
-    [SerializeField] private float sideThrusterForce = 1f;
+
+    public Transform playerShip;
+
+    public Rigidbody rb;
+
+    public float turnSpeed = 60f;
+    public float boostSpeed = 45f;
+
     public void Start()
     {
-        try
-        {
-            rb = GetComponent<Rigidbody>();
-            col = GetComponent<Collider>();
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError("Rigidbody or Collider component not found: " + e.Message);
-        }
+        rb = GetComponent<Rigidbody>();
+        rb.useGravity = true;
     }
 
-    public void upwardThruster(float force)
+
+    void FixedUpdate()
     {
-        rb.AddForce(transform.up * force);
+        turn();
+        thrust();
     }
 
-    public void forwardTilt(float force)
-    { 
-        rb.AddForceAtPosition(transform.forward * force, new Vector3(rb.position.x, col.bounds.size.y, rb.position.z));
-    }
-
-    public void backwardsTilt(float force)
+    void turn()
     {
-        rb.AddForceAtPosition(transform.forward * -force, new Vector3(rb.position.x, col.bounds.size.y, rb.position.z));
+        // y axis movement
+        float yaw = turnSpeed * Time.deltaTime * Input.GetAxis("Horizontal");
+        // x axis movement
+        float pitch = turnSpeed * Time.deltaTime * Input.GetAxis("Vertical");
+        // z axis movement
+        float roll = turnSpeed * Time.deltaTime * Input.GetAxis("Rotate");
+        playerShip.Rotate(pitch, yaw, roll);
     }
 
-   void Update()
+    void thrust()
     {
-        // Triggers continuously while holding the key down
-        if (Input.GetKey(KeyCode.Space)) upwardThruster(upwardThusterForce);
-        if (Input.GetKey(KeyCode.W)) forwardTilt(sideThrusterForce);
-        if (Input.GetKey(KeyCode.S)) backwardsTilt(sideThrusterForce);
-        
+        playerShip.position += playerShip.forward * boostSpeed * Time.deltaTime * Input.GetAxis("Throttle");
     }
+
 }
