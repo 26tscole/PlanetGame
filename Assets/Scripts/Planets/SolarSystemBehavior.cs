@@ -5,7 +5,7 @@ public class SolarSystemBehavior : MonoBehaviour
 {
     [SerializeField] private Dictionary<GameObject, float[]> planets = new Dictionary<GameObject, float[]>();
     [SerializeField] private GameObject sun;
-    [SerializeField] private float sunScale = 30f;
+    [SerializeField] private float solarSystemScale = 30f;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -40,7 +40,7 @@ public class SolarSystemBehavior : MonoBehaviour
             else
             {
                 float rotationSpeed = Random.Range(10f,30f);
-                planetScale = sunScale * Random.Range(0.2f, 1.5f);
+                planetScale = solarSystemScale * Random.Range(0.2f, 1.5f);
                 // this is so the planets dont touch each other no matter what size they are
                 distanceFromLastPlanet += Random.Range(50f, 60f) + (2 * planetScale);
                 planets[planet] = new float[] { planetScale, distanceFromLastPlanet, rotationSpeed }; 
@@ -59,14 +59,21 @@ public class SolarSystemBehavior : MonoBehaviour
             float[] planetProperties = planet.Value;
             float planetScale = planetProperties[0];
             float distanceFromSun = planetProperties[1];
+            float rotationSpeed = planetProperties[2];
 
             planetObject.transform.localScale = new Vector3(planetScale, planetScale, planetScale);
+            planetObject.transform.position = new Vector3(distanceFromSun, 0, 0);
 
-            Vector3 directionFromSun = (planetObject.transform.position - sun.transform.position).normalized;
-            Vector3 newPosition = sun.transform.position + directionFromSun * distanceFromSun;
-            planetObject.transform.position = newPosition;
+            addOrbitToPlanet(planetObject, sun, rotationSpeed);
         }
         
+    }
+
+    private void addOrbitToPlanet(GameObject planet, GameObject primaryBody,  float rotationSpeed)
+    {
+        Orbit orbit = planet.AddComponent<Orbit>();
+        orbit.primaryBody = primaryBody;
+        orbit.rotationSpeed = rotationSpeed;
     }
 
 }
