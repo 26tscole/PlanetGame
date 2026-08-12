@@ -5,13 +5,16 @@ public class SolarSystemBehavior : MonoBehaviour
 {
     [SerializeField] private Dictionary<GameObject, float[]> planets = new Dictionary<GameObject, float[]>();
     [SerializeField] private GameObject sun;
+    [SerializeField] private GameObject player;
     [SerializeField] private float solarSystemScale = 30f;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         planets = findPlanets();
+        setSunScale();
         alignPlanets();
+        setPlayerPosition();
     }
 
     // Update is called once per frame
@@ -39,7 +42,7 @@ public class SolarSystemBehavior : MonoBehaviour
             }
             else
             {
-                float rotationSpeed = Random.Range(10f,30f);
+                float rotationSpeed = Random.Range(10f,30f); 
                 planetScale = solarSystemScale * Random.Range(0.2f, 1.5f);
                 // this is so the planets dont touch each other no matter what size they are
                 distanceFromLastPlanet += Random.Range(50f, 60f) + (2 * planetScale);
@@ -69,11 +72,23 @@ public class SolarSystemBehavior : MonoBehaviour
         
     }
 
+    private void setSunScale()
+    {
+        float sunScale = solarSystemScale * Random.Range(1.5f, 3f);
+        sun.transform.localScale = new Vector3(sunScale, sunScale, sunScale);
+    }
+
     private void addOrbitToPlanet(GameObject planet, GameObject primaryBody,  float rotationSpeed)
     {
         Orbit orbit = planet.AddComponent<Orbit>();
         orbit.primaryBody = primaryBody;
         orbit.rotationSpeed = rotationSpeed;
+    }
+
+    private void setPlayerPosition()
+    {
+        float sunRadius = sun.GetComponent<SphereCollider>().bounds.extents.magnitude;
+        player.transform.position = new Vector3(sunRadius + 10f, 0, 0);
     }
 
 }

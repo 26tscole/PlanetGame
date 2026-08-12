@@ -20,12 +20,19 @@ public class Movement : MonoBehaviour
         screenCenter.y = Screen.height * 0.5f;
 
         Cursor.lockState = CursorLockMode.Confined;
-        Cursor.visible = false; 
+        Cursor.visible = true; 
     }
 
 
     void Update()
     {
+
+        if (Input.mousePosition.x < 0 || Input.mousePosition.x > Screen.width ||
+            Input.mousePosition.y < 0 || Input.mousePosition.y > Screen.height)
+        {
+            // Stop moving if mouse is out of bounds
+            return; 
+        }
         lookInput.x = Input.mousePosition.x;
         lookInput.y = Input.mousePosition.y;
 
