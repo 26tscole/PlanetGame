@@ -102,8 +102,8 @@ public class SolarSystemBehavior : MonoBehaviour
 
     private void setPlayerPosition()
     {
-        float sunRadius = sun.GetComponent<SphereCollider>().bounds.extents.magnitude;
-        player.transform.position = new Vector3(sunRadius + 10f, 0, 0);
+        float sunRadius = solarSystemScale + sun.transform.localScale.magnitude;
+        player.transform.position = new Vector3(sunRadius, 0, 0);
     }
 
 }

@@ -33,6 +33,7 @@ public class Movement : MonoBehaviour
             // Stop moving if mouse is out of bounds
             return; 
         }
+        
         lookInput.x = Input.mousePosition.x;
         lookInput.y = Input.mousePosition.y;
 
