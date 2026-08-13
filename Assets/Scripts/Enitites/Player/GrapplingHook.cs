@@ -6,9 +6,15 @@ public class GrapplingHook : MonoBehaviour
     public GameObject grapplingObject; 
     private GameObject grappledObject;
     private Vector3 grapplePoint;
+    [SerializeField]private LineRenderer lineRenderer;
     [SerializeField] private float stiffness = 100f;
     [SerializeField] private float damping = 10f;
     private bool isGrappling = false;
+
+    void Start()
+    {
+        lineRenderer.positionCount = 2;
+    }
 
     // Update is called once per frame
     void Update()
@@ -20,7 +26,10 @@ public class GrapplingHook : MonoBehaviour
             if (grappledObject != null)
             {
                 isGrappling = true;
+                lineRenderer.SetPosition(0, grapplingObject.transform.position);
+                lineRenderer.SetPosition(1, grappledObject.transform.position);
                 grapplePoint = grappledObject.transform.position;
+
             }
         }
 
@@ -28,11 +37,15 @@ public class GrapplingHook : MonoBehaviour
         {
             isGrappling = false;
             grappledObject = null;
+            lineRenderer.SetPosition(0, Vector3.zero);
+            lineRenderer.SetPosition(1, Vector3.zero);
         }
 
         if (isGrappling && grappledObject != null)
         {
             grapplePoint = grappledObject.transform.position;
+            lineRenderer.SetPosition(0, grapplingObject.transform.position);
+            lineRenderer.SetPosition(1, grappledObject.transform.position);
             springForce(grapplePoint);
         }
         
