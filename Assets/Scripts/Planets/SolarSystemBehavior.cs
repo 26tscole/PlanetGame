@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class SolarSystemBehavior : MonoBehaviour
 {
-    [SerializeField] private Dictionary<GameObject, float[]> planets = new Dictionary<GameObject, float[]>();
+    [SerializeField] private Dictionary<GameObject, float[]>planetSystems = new Dictionary<GameObject, float[]>();
     [SerializeField] private GameObject sun;
     [SerializeField] private GameObject player;
     [SerializeField] private float solarSystemScale = 30f;
@@ -11,8 +11,7 @@ public class SolarSystemBehavior : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        planets = findPlanets();
-        setSunScale();
+        findPlanetSystems();
         alignPlanets();
         setPlayerPosition();
     }
@@ -24,61 +23,77 @@ public class SolarSystemBehavior : MonoBehaviour
     }
 
     // universally returns planets in solar system and sets their rotation speed, distance from the sun, and size
-    private Dictionary<GameObject, float[]> findPlanets()
+    private void findPlanetSystems()
     {
-        if (!(planets == null || planets.Count == 0))
+        // just in case there are no planets
+        if (!(planetSystems == null || planetSystems.Count == 0))
         {
-            return planets;
+            Debug.Log("There are no planet systems in this solar system");
+            return;
         }
+
         // this is so the planets dont touch the sun no matter what size the sun is
-        float distanceFromLastPlanet = 50f + sun.GetComponent<SphereCollider>().bounds.extents.magnitude;
+        float sunScale = solarSystemScale * Random.Range(1.5f, 3f);
+        float distanceFromLastPlanet = 2f * sunScale;
         float planetScale;
-        for (int i = 0; i < transform.childCount; i++)
+
+        foreach (Transform planet in transform)
         {
-            GameObject planet = transform.GetChild(i).gameObject;
             if (planet.name == "Sun")
             {
-                sun = planet;
+                sun = planet.gameObject;
+                sun.transform.localScale = new Vector3(sunScale, sunScale, sunScale);
             }
             else
             {
-                float rotationSpeed = Random.Range(10f,30f); 
+                float rotationSpeed = Random.Range(10f,50f); 
                 planetScale = solarSystemScale * Random.Range(0.2f, 1.5f);
-                // this is so the planets dont touch each other no matter what size they are
-                distanceFromLastPlanet += Random.Range(50f, 60f) + (2 * planetScale);
-                planets[planet] = new float[] { planetScale, distanceFromLastPlanet, rotationSpeed }; 
-                Debug.Log("Planet " + i + " is " + planet.name);
+                distanceFromLastPlanet += Random.Range(50f, 90f) + (2 * planetScale);
+                
+                planetSystems[planet.gameObject] = new float[] { planetScale, distanceFromLastPlanet, rotationSpeed }; 
+                Debug.Log("Planet is " + planet.name + " with scale " + planetScale + ", distance from sun " + distanceFromLastPlanet + ", and rotation speed " + rotationSpeed);
             }
 
         }
-        return planets;
     }
 
     private void alignPlanets()
     {  
-        foreach (KeyValuePair<GameObject, float[]> planet in planets)
+        foreach (KeyValuePair<GameObject, float[]> systems in planetSystems)
         {
-            GameObject planetObject = planet.Key;
-            float[] planetProperties = planet.Value;
+            GameObject systemObject = systems.Key;
+            GameObject planet = systemObject.transform.GetChild(0).gameObject;
+            GameObject moon = systemObject.transform.GetChild(1).gameObject;
+
+            float[] planetProperties = systems.Value;
             float planetScale = planetProperties[0];
             float distanceFromSun = planetProperties[1];
             float rotationSpeed = planetProperties[2];
 
-            planetObject.transform.localScale = new Vector3(planetScale, planetScale, planetScale);
-            planetObject.transform.position = new Vector3(distanceFromSun, 0, 0);
+            planet.transform.localScale = new Vector3(planetScale, planetScale, planetScale);
+            planet.transform.position = new Vector3(distanceFromSun, 0, 0);
+            addOrbitToObject(planet, sun, rotationSpeed);
 
-            addOrbitToPlanet(planetObject, sun, rotationSpeed);
+            applyMoonsStats(moon, planet, rotationSpeed, planetScale);
+            
         }
-        
     }
 
-    private void setSunScale()
+    private void applyMoonsStats(GameObject Moons, GameObject Planet, float rotationSpeed, float planetScale)
     {
-        float sunScale = solarSystemScale * Random.Range(1.5f, 3f);
-        sun.transform.localScale = new Vector3(sunScale, sunScale, sunScale);
+        float moonScale = planetScale * Random.Range(0.1f, 0.5f);
+        float moonDistance = planetScale * Random.Range(1.5f, 3f);
+        float moonRotationSpeed = rotationSpeed * Random.Range(1.5f, 3f);
+
+        foreach (Transform moon in Moons.transform)
+        {
+            moon.transform.localScale = new Vector3(moonScale, moonScale, moonScale);
+            moon.transform.position = new Vector3(moonDistance, 0, 0);
+            addOrbitToObject(moon.gameObject, Planet, moonRotationSpeed);
+        }
     }
 
-    private void addOrbitToPlanet(GameObject planet, GameObject primaryBody,  float rotationSpeed)
+    private void addOrbitToObject(GameObject planet, GameObject primaryBody,  float rotationSpeed)
     {
         Orbit orbit = planet.AddComponent<Orbit>();
         orbit.primaryBody = primaryBody;
