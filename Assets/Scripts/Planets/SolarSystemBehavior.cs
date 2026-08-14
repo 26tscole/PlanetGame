@@ -95,6 +95,8 @@ public class SolarSystemBehavior : MonoBehaviour
 
     private void addOrbitToObject(GameObject planet, GameObject primaryBody,  float rotationSpeed)
     {
+        int orbitDirection = Random.value < 0.5f ? -1 : 1;
+        rotationSpeed *= orbitDirection;
         Orbit orbit = planet.AddComponent<Orbit>();
         orbit.primaryBody = primaryBody;
         orbit.rotationSpeed = rotationSpeed;
