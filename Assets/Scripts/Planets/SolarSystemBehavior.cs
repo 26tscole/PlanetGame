@@ -82,7 +82,7 @@ public class SolarSystemBehavior : MonoBehaviour
     private void applyMoonsStats(GameObject Moons, GameObject Planet, float rotationSpeed, float planetScale)
     {
         float moonScale = planetScale * Random.Range(0.1f, 0.5f);
-        float moonDistance = planetScale * Random.Range(1.5f, 3f);
+        float moonDistance = planetScale * Random.Range(1.5f, 2f);
         float moonRotationSpeed = rotationSpeed * Random.Range(1.5f, 3f);
 
         foreach (Transform moon in Moons.transform)
@@ -90,6 +90,7 @@ public class SolarSystemBehavior : MonoBehaviour
             moon.transform.localScale = new Vector3(moonScale, moonScale, moonScale);
             moon.transform.position = new Vector3(moonDistance, 0, 0);
             addOrbitToObject(moon.gameObject, Planet, moonRotationSpeed);
+            moonDistance /= 2f;
         }
     }
 
