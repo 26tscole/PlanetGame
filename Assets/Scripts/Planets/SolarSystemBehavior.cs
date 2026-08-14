@@ -40,6 +40,7 @@ public class SolarSystemBehavior : MonoBehaviour
             {
                 sun = planet.gameObject;
                 sun.transform.localScale = new Vector3(sunScale, sunScale, sunScale);
+                sun.tag = "Sun";
             }
             else
             {
@@ -63,6 +64,7 @@ public class SolarSystemBehavior : MonoBehaviour
             GameObject moon = systemObject.transform.GetChild(1).gameObject;
 
             float[] planetProperties = systems.Value;
+            planet.tag = "Planet";
             float planetScale = planetProperties[0];
             float distanceFromSun = planetProperties[1];
             float rotationSpeed = planetProperties[2];
@@ -86,6 +88,7 @@ public class SolarSystemBehavior : MonoBehaviour
         {
             moon.transform.localScale = new Vector3(moonScale, moonScale, moonScale);
             moon.transform.position = new Vector3(moonDistance, 0, 0);
+            moon.tag = "Moon";
             addOrbitToObject(moon.gameObject, Planet, moonRotationSpeed);
             moonDistance /= 2f;
         }

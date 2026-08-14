@@ -195,11 +195,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7400510438367465617, guid: 5f776740c447e45afb25edbca842de92, type: 3}
       propertyPath: m_Radius
-      value: 0.5
+      value: 1.1
       objectReference: {fileID: 0}
     - target: {fileID: 7400510438367465617, guid: 5f776740c447e45afb25edbca842de92, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7400510438367465617, guid: 5f776740c447e45afb25edbca842de92, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9043803773543394101, guid: 5f776740c447e45afb25edbca842de92, type: 3}
       propertyPath: m_Materials.Array.size
@@ -556,6 +560,8 @@ MonoBehaviour:
   sun: {fileID: 1599528943}
   player: {fileID: 1940453011}
   solarSystemScale: 30
+  isSolarSystemCreationComplete: 0
+  solarSystemMagnitude: 0
 --- !u!4 &586869062 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4387678931267766, guid: 1818e1a170ef94c3aacee2ba50057521, type: 3}
@@ -1963,6 +1969,18 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2342367695629975326, guid: 303360ff23fb11e4fbd6caa2b92454ac, type: 3}
   m_PrefabInstance: {fileID: 4951753300363452679}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1940453019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1940453011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f48e1d9af87e5cc458238e5cc199cd32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerContact
 --- !u!1001 &1955882392
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1974,6 +1992,10 @@ PrefabInstance:
     - target: {fileID: 1856687845478954, guid: ab152f61198d54532ae39108e616ff59, type: 3}
       propertyPath: m_Name
       value: Mercury
+      objectReference: {fileID: 0}
+    - target: {fileID: 1856687845478954, guid: ab152f61198d54532ae39108e616ff59, type: 3}
+      propertyPath: m_TagString
+      value: Planet
       objectReference: {fileID: 0}
     - target: {fileID: 4620931210112870, guid: ab152f61198d54532ae39108e616ff59, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2119,6 +2141,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2342367695629975326, guid: 303360ff23fb11e4fbd6caa2b92454ac, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 5205092705820761001, guid: 303360ff23fb11e4fbd6caa2b92454ac, type: 3}
+      propertyPath: m_ProvidesContacts
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6076360825981749258, guid: 303360ff23fb11e4fbd6caa2b92454ac, type: 3}
       propertyPath: m_LocalPosition.x
       value: 100
@@ -2162,7 +2192,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2342367695629975326, guid: 303360ff23fb11e4fbd6caa2b92454ac, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1940453019}
   m_SourcePrefab: {fileID: 100100000, guid: 303360ff23fb11e4fbd6caa2b92454ac, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
