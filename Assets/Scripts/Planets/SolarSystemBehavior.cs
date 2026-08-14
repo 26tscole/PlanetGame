@@ -7,8 +7,9 @@ public class SolarSystemBehavior : MonoBehaviour
     [SerializeField] private GameObject sun;
     [SerializeField] private GameObject player;
     [SerializeField] private float solarSystemScale = 30f;
-    public bool isSolarSystemCreationComplete = false;
+    public event System.Action Finished;
     public float solarSystemMagnitude;
+    public float sunMagnitude;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -16,7 +17,7 @@ public class SolarSystemBehavior : MonoBehaviour
         findPlanetSystems();
         alignPlanets();
         setPlayerPosition();
-        isSolarSystemCreationComplete = true;
+        Finished?.Invoke();
     }
 
     // universally returns planets in solar system and sets their rotation speed, distance from the sun, and size
@@ -41,6 +42,7 @@ public class SolarSystemBehavior : MonoBehaviour
                 sun = planet.gameObject;
                 sun.transform.localScale = new Vector3(sunScale, sunScale, sunScale);
                 sun.tag = "Sun";
+                sunMagnitude = sun.transform.localScale.magnitude;
             }
             else
             {
@@ -51,8 +53,8 @@ public class SolarSystemBehavior : MonoBehaviour
                 planetSystems[planet.gameObject] = new float[] { planetScale, distanceFromLastPlanet, rotationSpeed }; 
                 Debug.Log("Planet is " + planet.name + " with scale " + planetScale + ", distance from sun " + distanceFromLastPlanet + ", and rotation speed " + rotationSpeed);
             }
-
         }
+        solarSystemMagnitude = sunScale + distanceFromLastPlanet;
     }
 
     private void alignPlanets()
@@ -106,7 +108,8 @@ public class SolarSystemBehavior : MonoBehaviour
     private void setPlayerPosition()
     {
         float sunRadius = solarSystemScale + sun.transform.localScale.magnitude;
-        player.transform.position = new Vector3(sunRadius, 0, 0);
+        player.transform.position = new Vector3(0, sunRadius, 0);
+        player.transform.LookAt(sun.transform.position);
     }
 
 }
