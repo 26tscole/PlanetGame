@@ -7,6 +7,8 @@ public class SolarSystemBehavior : MonoBehaviour
     [SerializeField] private GameObject sun;
     [SerializeField] private GameObject player;
     [SerializeField] private float solarSystemScale = 30f;
+    public bool isSolarSystemCreationComplete = false;
+    public float solarSystemMagnitude;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -14,12 +16,7 @@ public class SolarSystemBehavior : MonoBehaviour
         findPlanetSystems();
         alignPlanets();
         setPlayerPosition();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        isSolarSystemCreationComplete = true;
     }
 
     // universally returns planets in solar system and sets their rotation speed, distance from the sun, and size

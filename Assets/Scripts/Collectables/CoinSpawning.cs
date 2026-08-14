@@ -1,8 +1,14 @@
 using UnityEngine;
 
-public class GoldCoins : MonoBehaviour
+public class CoinSpawning : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [Header("Coin Settings")]
+    public GameObject coin;
+    public float coinRotationSpeed = 50f;
+    public int coinAmount = 1;
+    public float coinValue = 1f;
+    public float[] coinModifiers = { 0f };
+
     void Start()
     {
         
@@ -13,4 +19,13 @@ public class GoldCoins : MonoBehaviour
     {
         
     }
+
+    private void createCoins()
+    {
+        for( int i = 0; i<coinAmount; i++)
+        {
+            
+        }
+    }
+
 }
